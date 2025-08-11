@@ -1,0 +1,42 @@
+// Light Active LED with adjustable sensitivity
+
+int ledpin[] = {2, 5, 8, 11};
+
+int ldrpin = A0;
+int potpin = A3;
+
+int ldrvalue;
+int potvalue;
+
+void setup() {
+  Serial.begin(9600);
+
+  // Set LEDs as output
+  for (int i = 0; i < 4; i++) {
+    pinMode(ledpin[i], OUTPUT);
+  }
+}
+
+void loop() {
+  ldrvalue = analogRead(ldrpin);
+  potvalue = analogRead(potpin);
+
+  int limit = map(potvalue, 0, 1023, 100, 900);
+
+  Serial.print("LDR: ");
+  Serial.print(ldrvalue);
+  Serial.print(" | Limit: ");
+  Serial.println(limit);
+
+  if (ldrvalue < limit) {
+    for (int i = 0; i < 4; i++) {
+      digitalWrite(ledpin[i], HIGH);
+    }
+  } else {
+    for (int i = 0; i < 4; i++) {
+      digitalWrite(ledpin[i], LOW);
+    }
+  }
+
+  delay(200);
+}
