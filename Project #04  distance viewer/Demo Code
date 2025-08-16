@@ -1,0 +1,50 @@
+
+// This Code is Just a demo ,You have to enter the codes according to your connected PIN.
+
+
+#include <LiquidCrystal.h>
+
+// LCD pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// Ultrasonic sensor pins
+#define TRIG_PIN 9
+#define ECHO_PIN 10
+
+long duration;
+int distance;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+}
+
+void loop() {
+  // Clear trigger
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+
+  // Trigger the sensor by setting the trigPin HIGH for 10 microseconds
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  // Read the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(ECHO_PIN, HIGH);
+
+  // Calculate the distance:
+  // Speed of sound = 343 m/s = 0.0343 cm/us
+  // Distance = (duration / 2) * speed of sound
+  distance = duration * 0.034 / 2;
+
+  // Display distance on LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Distance:");
+  lcd.setCursor(0, 1);
+  lcd.print(distance);
+  lcd.print(" cm");
+
+  delay(500);
+}
